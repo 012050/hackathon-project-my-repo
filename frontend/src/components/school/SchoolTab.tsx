@@ -108,6 +108,7 @@ export default function SchoolTab({ onMealAdded }: { onMealAdded?: () => void })
   const daySlots = slots?.day === day ? slots : null;
   const dayResult = result?.day === day && result.now === time ? result : null;
   const noClass = day !== null && classes.length > 0 && dayClasses.length === 0;
+  const dayLabel = day === realToday ? "오늘은" : `${day}요일은`;
 
   return (
     <div className="school-tab">
@@ -132,13 +133,13 @@ export default function SchoolTab({ onMealAdded }: { onMealAdded?: () => void })
       )}
 
       {!day && <div className="card school-empty">오늘은 수업이 없어요</div>}
-      {noClass && <div className="card school-empty">{day}요일은 수업이 없어요</div>}
+      {noClass && <div className="card school-empty">{dayLabel} 수업이 없어요</div>}
 
       {day && !noClass && (
         <>
           {daySlots?.lunchWarning && (
             <div className="school-lunch-warn">
-              오늘은 점심시간(11~14시)에 빈 시간이 없어요. 수업 전에 미리 먹거나 사두세요.
+              {dayLabel} 점심시간(11~14시)에 빈 시간이 없어요. 수업 전에 미리 먹거나 사두세요.
             </div>
           )}
 
