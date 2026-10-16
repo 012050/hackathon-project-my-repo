@@ -1,6 +1,7 @@
 import { light } from "@/lib/api";
 import type { Light, Nutrition, NutrientKey } from "@/lib/types";
-import { DAILY, PER_MEAL } from "./portion";
+import { profileLabel, referenceFor, useProfile } from "@/components/coach/profile";
+import { DAILY, PER_MEAL, scaleNutrition } from "./portion";
 import "./nutrition.css";
 
 const LABELS: Record<NutrientKey, { label: string; unit: string }> = {
@@ -76,11 +77,14 @@ export default function NutritionChart({
   compact = false,
 }: {
   value: Nutrition;
-  /** daily = 하루 기준(DAILY_REFERENCES), meal = 한 끼 기준(DAILY_REFERENCES/3) */
+  /** daily = 하루 기준, meal = 한 끼 기준(하루의 1/3). 내 정보를 설정했으면 그 권장량, 아니면 DAILY_REFERENCES */
   basis: "daily" | "meal";
   compact?: boolean;
 }) {
-  const ref = basis === "daily" ? DAILY : PER_MEAL;
+  const profile = useProfile();
+  const daily = profile ? referenceFor(profile) : DAILY;
+  const ref = basis === "daily" ? daily : profile ? scaleNutrition(daily, 1 / 3) : PER_MEAL;
+  const basisText = `${profile ? `내 권장량(${profileLabel(profile)}, 참고 기준)` : "하루 권장량"}${basis === "meal" ? "의 1/3(한 끼)" : ""}`;
   return (
     <div className={`nut-chart${compact ? " compact" : ""}`}>
       <div className="nut-chart-graphs">
@@ -100,7 +104,7 @@ export default function NutritionChart({
           </li>
         ))}
       </ul>
-      <div className="nut-basis">{basis === "daily" ? "하루 권장량" : "한 끼 권장량(하루의 1/3)"} 대비 · 막대의 세로선이 100%</div>
+      <div className="nut-basis">{basisText} 대비 · 막대의 세로선이 100%</div>
     </div>
   );
 }

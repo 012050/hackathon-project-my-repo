@@ -5,6 +5,7 @@ import { ApiError, addMeal, deleteMeal, getMeals, today } from "@/lib/api";
 import type { DailySummary, MealLog } from "@/lib/types";
 import MealConfirmSheet, { type ConfirmRequest } from "./MealConfirmSheet";
 import NutritionChart from "./NutritionChart";
+import { lackingOf, referenceFor, useProfile } from "@/components/coach/profile";
 import { parsePortion, portionedMenu, scaleNutrition } from "./portion";
 import "./nutrition.css";
 
@@ -32,6 +33,9 @@ export default function DailySummaryCard({
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [sheet, setSheet] = useState<ConfirmRequest | null>(null);
+  const profile = useProfile();
+  // 내 정보를 설정했으면 부족 판정도 내 권장량 기준으로
+  const lacking = summary ? (profile ? lackingOf(summary.total, referenceFor(profile)) : summary.lacking) : [];
 
   // 합계가 바뀔 때마다(=기록이 바뀜) 목록도 다시 불러옴
   useEffect(() => {
@@ -85,9 +89,9 @@ export default function DailySummaryCard({
         <>
           <div className="muted">기록 {summary.count}끼</div>
           <NutritionChart value={summary.total} basis="daily" />
-          {summary.lacking.length > 0 && (
+          {lacking.length > 0 && (
             <div className="chips">
-              {summary.lacking.map((key) => (
+              {lacking.map((key) => (
                 <span key={key} className="chip lacking">
                   부족: {LABELS[key] ?? key}
                 </span>
