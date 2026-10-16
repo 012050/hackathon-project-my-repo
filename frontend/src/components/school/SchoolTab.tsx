@@ -24,6 +24,7 @@ import type {
 import CampusMap from "./CampusMap";
 import DayTimePicker from "./DayTimePicker";
 import PlaceCard from "./PlaceCard";
+import ReceiptNutrition from "./ReceiptNutrition";
 import Timeline from "./Timeline";
 import "./school.css";
 
@@ -201,6 +202,14 @@ export default function SchoolTab({ onMealAdded }: { onMealAdded?: () => void })
             ))}
         </>
       )}
+
+      <ReceiptNutrition
+        time={time}
+        onRecorded={(message) => {
+          setToast(message);
+          onMealAdded?.();
+        }}
+      />
 
       {toast && (
         <div className="school-toast" role="status">

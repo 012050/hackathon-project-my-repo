@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from . import ai
+from .convenience import router as convenience_router
 from .errors import ApiError
 from .home import router as home_router
 from .meals import router as meals_router
@@ -28,6 +29,7 @@ app.add_middleware(
 
 for r in (home_router, school_router, meals_router, nutrition_router):
     app.include_router(r)
+app.include_router(convenience_router)
 
 
 @app.get("/api/health", response_model=HealthResponse, tags=["공통"])

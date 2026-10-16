@@ -1,0 +1,30 @@
+{
+  "_note": "편의점 상품 1개 기준 영양성분 (일반적인 값, 추정). 단위: kcal / g / mg",
+  "products": [
+    { "name": "햄치즈 샌드위치", "aliases": ["햄치즈샌드", "햄앤치즈 샌드위치"], "kcal": 330, "carb": 35, "protein": 13, "fat": 15, "sodium": 750, "estimated": true },
+    { "name": "에그 샌드위치", "aliases": ["계란 샌드위치", "에그샐러드 샌드위치"], "kcal": 360, "carb": 30, "protein": 11, "fat": 21, "sodium": 600, "estimated": true },
+    { "name": "참치마요 삼각김밥", "aliases": ["참치마요", "참치마요네즈 삼각김밥"], "kcal": 200, "carb": 33, "protein": 5, "fat": 5.5, "sodium": 450, "estimated": true },
+    { "name": "전주비빔 삼각김밥", "aliases": ["전주비빔"], "kcal": 190, "carb": 36, "protein": 4, "fat": 3, "sodium": 480, "estimated": true },
+    { "name": "삼각김밥", "aliases": [], "kcal": 195, "carb": 34, "protein": 4.5, "fat": 4.5, "sodium": 460, "estimated": true },
+    { "name": "김밥", "aliases": ["줄김밥"], "kcal": 450, "carb": 70, "protein": 12, "fat": 13, "sodium": 950, "estimated": true },
+    { "name": "도시락", "aliases": ["제육도시락", "치킨도시락"], "kcal": 780, "carb": 110, "protein": 25, "fat": 25, "sodium": 1750, "estimated": true },
+    { "name": "컵밥", "aliases": [], "kcal": 520, "carb": 85, "protein": 12, "fat": 13, "sodium": 1200, "estimated": true },
+    { "name": "큰컵 컵라면", "aliases": ["컵라면 큰컵", "큰사발", "신라면큰사발", "육개장 큰사발"], "kcal": 510, "carb": 78, "protein": 10, "fat": 17, "sodium": 1800, "estimated": true },
+    { "name": "컵라면", "aliases": ["소컵 컵라면", "육개장 사발면"], "kcal": 300, "carb": 45, "protein": 6, "fat": 11, "sodium": 1100, "estimated": true },
+    { "name": "바나나우유", "aliases": ["바나나맛우유"], "kcal": 208, "carb": 30, "protein": 7, "fat": 7, "sodium": 120, "estimated": true },
+    { "name": "초코우유", "aliases": ["초코에몽"], "kcal": 190, "carb": 28, "protein": 6, "fat": 6, "sodium": 150, "estimated": true },
+    { "name": "흰우유", "aliases": ["우유"], "kcal": 130, "carb": 10, "protein": 6, "fat": 7, "sodium": 100, "estimated": true },
+    { "name": "아메리카노", "aliases": ["아이스아메리카노", "아이스 아메리카노"], "kcal": 10, "carb": 2, "protein": 0.5, "fat": 0, "sodium": 5, "estimated": true },
+    { "name": "카페라떼", "aliases": ["라떼", "카페 라떼"], "kcal": 180, "carb": 15, "protein": 9, "fat": 9, "sodium": 150, "estimated": true },
+    { "name": "삶은계란", "aliases": ["구운계란", "맥반석계란", "반숙란"], "kcal": 75, "carb": 0.6, "protein": 6.3, "fat": 5, "sodium": 140, "estimated": true },
+    { "name": "닭가슴살", "aliases": ["훈제닭가슴살", "닭가슴살 스테이크"], "kcal": 120, "carb": 2, "protein": 23, "fat": 2, "sodium": 450, "estimated": true },
+    { "name": "샐러드", "aliases": ["컵샐러드", "닭가슴살 샐러드"], "kcal": 150, "carb": 12, "protein": 6, "fat": 8, "sodium": 300, "estimated": true },
+    { "name": "바나나", "aliases": [], "kcal": 90, "carb": 23, "protein": 1, "fat": 0.3, "sodium": 1, "estimated": true },
+    { "name": "핫바", "aliases": ["숯불구이핫바"], "kcal": 190, "carb": 15, "protein": 9, "fat": 10, "sodium": 700, "estimated": true },
+    { "name": "프로틴음료", "aliases": ["단백질음료", "프로틴 드링크"], "kcal": 120, "carb": 6, "protein": 20, "fat": 2, "sodium": 150, "estimated": true },
+    { "name": "요거트", "aliases": ["요구르트", "떠먹는요거트"], "kcal": 120, "carb": 18, "protein": 4, "fat": 3, "sodium": 60, "estimated": true },
+    { "name": "콜라", "aliases": ["코카콜라", "펩시"], "kcal": 215, "carb": 54, "protein": 0, "fat": 0, "sodium": 20, "estimated": true },
+    { "name": "제로콜라", "aliases": ["코카콜라제로", "펩시제로"], "kcal": 0, "carb": 0, "protein": 0, "fat": 0, "sodium": 30, "estimated": true },
+    { "name": "생수", "aliases": ["물", "삼다수"], "kcal": 0, "carb": 0, "protein": 0, "fat": 0, "sodium": 0, "estimated": true }
+  ]
+}

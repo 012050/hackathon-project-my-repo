@@ -334,3 +334,41 @@
   font-weight: 600;
   margin: 6px 4px 2px;
 }
+
+/* 편의점 영수증 */
+.school-receipt {
+  margin-top: 16px;
+}
+
+.school-badge {
+  margin-left: 6px;
+  font-size: 11px;
+  font-weight: normal;
+  color: #92400e;
+  background: #fef3c7;
+  border-radius: 999px;
+  padding: 1px 6px;
+  vertical-align: 1px;
+}
+
+.school-receipt-missing .school-menu-name {
+  color: #888;
+}
+
+.school-receipt-total {
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+  padding-top: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.school-receipt-notice {
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  color: #3730a3;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 14px;
+  margin-top: 10px;
+}
