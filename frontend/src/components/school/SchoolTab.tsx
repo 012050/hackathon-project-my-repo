@@ -21,6 +21,8 @@ import type {
   SchoolRecommendResponse,
   SlotsResponse,
 } from "@/lib/types";
+import MealConfirmSheet, { type ConfirmRequest } from "@/components/nutrition/MealConfirmSheet";
+import { portionedMenu, withPortion } from "@/components/nutrition/portion";
 import CampusMap from "./CampusMap";
 import DayTimePicker from "./DayTimePicker";
 import PlaceCard from "./PlaceCard";
@@ -47,6 +49,7 @@ export default function SchoolTab({ onMealAdded }: { onMealAdded?: () => void })
   const [error, setError] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [eatingKey, setEatingKey] = useState<string | null>(null);
+  const [sheet, setSheet] = useState<ConfirmRequest | null>(null);
 
   // 시간표·캠퍼스는 한 번만
   useEffect(() => {
@@ -104,18 +107,24 @@ export default function SchoolTab({ onMealAdded }: { onMealAdded?: () => void })
     [foodPlaces],
   );
 
-  const eat = async (key: string, menu: Menu) => {
-    setEatingKey(key);
+  // [먹었어요] → 확인 시트에서 양·시간을 고른 뒤 저장
+  const eat = (key: string, menu: Menu) => {
     setError(null);
-    try {
-      await addMeal({ date: today(), time, menu });
-      setToast(`"${menu.name}" 기록했어요`);
-      onMealAdded?.();
-    } catch (e) {
-      setError(errorText(e));
-    } finally {
-      setEatingKey(null);
-    }
+    setSheet({
+      title: menu.name,
+      base: menu,
+      defaultTime: time,
+      onConfirm: async (portion, mealTime) => {
+        setEatingKey(key);
+        try {
+          await addMeal({ date: today(), time: mealTime, menu: portionedMenu(menu, portion) });
+        } finally {
+          setEatingKey(null);
+        }
+        setToast(`"${withPortion(menu.name, portion)}" 기록했어요`);
+        onMealAdded?.();
+      },
+    });
   };
 
   const daySlots = slots?.day === day ? slots : null;
@@ -210,6 +219,8 @@ export default function SchoolTab({ onMealAdded }: { onMealAdded?: () => void })
           onMealAdded?.();
         }}
       />
+
+      <MealConfirmSheet request={sheet} onClose={() => setSheet(null)} />
 
       {toast && (
         <div className="school-toast" role="status">

@@ -25,6 +25,7 @@ import type {
   SlotsResponse,
 } from "@/lib/types";
 import SchoolTab from "@/components/school/SchoolTab";
+import DailySummaryCard from "@/components/nutrition/DailySummaryCard";
 
 const NUTRIENT_LABELS: Record<string, string> = {
   kcal: "칼로리",
@@ -227,34 +228,7 @@ export default function Home() {
 
       {tab === "school" && <SchoolTab onMealAdded={refreshSummary} />}
 
-      <div className="card">
-        <h3>오늘 하루 합계 ({today()})</h3>
-        {!summary && <div className="muted">기록이 아직 없어요</div>}
-        {summary && (
-          <>
-            <div className="muted">기록 {summary.count}끼</div>
-            <div className="lights">
-              {(["kcal", "carb", "protein", "fat", "sodium"] as const).map((key) => (
-                <LightBadge
-                  key={key}
-                  name={NUTRIENT_LABELS[key]}
-                  value={summary.total[key]}
-                  lightValue={summary.lights[key]}
-                />
-              ))}
-            </div>
-            {summary.lacking.length > 0 && (
-              <div className="chips">
-                {summary.lacking.map((key) => (
-                  <span key={key} className="chip lacking">
-                    부족: {NUTRIENT_LABELS[key] ?? key}
-                  </span>
-                ))}
-              </div>
-            )}
-          </>
-        )}
-      </div>
+      <DailySummaryCard summary={summary} onChanged={refreshSummary} />
     </>
   );
 }

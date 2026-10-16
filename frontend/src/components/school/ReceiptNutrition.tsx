@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { ApiError, addMeal, menuLights, today } from "@/lib/api";
 import type { Nutrition } from "@/lib/types";
+import MealConfirmSheet, { type ConfirmRequest } from "@/components/nutrition/MealConfirmSheet";
+import NutritionChart from "@/components/nutrition/NutritionChart";
+import { scaleNutrition, withPortion } from "@/components/nutrition/portion";
 import { LIGHT_LABELS, NUTRIENTS } from "./labels";
 
 // ---------- POST /api/receipt/nutrition (api.ts 를 건드리지 않으려고 여기에 둠, 형식은 api.ts 와 같게) ----------
@@ -91,6 +94,7 @@ export default function ReceiptNutrition({
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [elapsed, setElapsed] = useState(0);
+  const [sheet, setSheet] = useState<ConfirmRequest | null>(null);
 
   // AI 인식은 7초 안팎 걸리므로 기다리는 동안 경과 시간을 보여줌
   useEffect(() => {
@@ -116,36 +120,43 @@ export default function ReceiptNutrition({
     }
   };
 
-  const eatAll = async () => {
+  // [다 먹었어요] → 확인 시트에서 양·시간을 고른 뒤 상품마다 기록 (영양 정보 없는 상품은 제외)
+  const eatAll = () => {
     if (!result) return;
     const eaten = result.items.filter((i) => i.found);
-    setSaving(true);
     setError(null);
-    try {
-      for (const item of eaten) {
-        await addMeal({
-          date: today(),
-          time: /^\d{2}:\d{2}$/.test(time) ? time : "12:00",
-          menu: {
-            name: item.qty !== 1 ? `${item.name} ×${item.qty}` : item.name,
-            source: "school",
-            price: item.price ?? undefined,
-            kcal: item.kcal ?? 0,
-            carb: item.carb ?? 0,
-            protein: item.protein ?? 0,
-            fat: item.fat ?? 0,
-            sodium: item.sodium ?? 0,
-            estimated: item.estimated,
-          },
-        });
-      }
-      setSaved(true);
-      onRecorded(`영수증 상품 ${eaten.length}개를 기록했어요`);
-    } catch (e) {
-      setError(errorText(e));
-    } finally {
-      setSaving(false);
-    }
+    setSheet({
+      title: `영수증 상품 ${eaten.length}개`,
+      note: eaten.map((i) => (i.qty !== 1 ? `${i.name} ×${i.qty}` : i.name)).join(", "),
+      base: result.total,
+      defaultTime: time,
+      onConfirm: async (portion, mealTime) => {
+        setSaving(true);
+        try {
+          for (const item of eaten) {
+            const name = item.qty !== 1 ? `${item.name} ×${item.qty}` : item.name;
+            await addMeal({
+              date: today(),
+              time: mealTime,
+              menu: {
+                name: withPortion(name, portion),
+                source: "school",
+                price: item.price ?? undefined,
+                estimated: item.estimated,
+                ...scaleNutrition(
+                  { kcal: item.kcal ?? 0, carb: item.carb ?? 0, protein: item.protein ?? 0, fat: item.fat ?? 0, sodium: item.sodium ?? 0 },
+                  portion,
+                ),
+              },
+            });
+          }
+        } finally {
+          setSaving(false);
+        }
+        setSaved(true);
+        onRecorded(`영수증 상품 ${eaten.length}개를 기록했어요`);
+      },
+    });
   };
 
   const foundCount = result?.items.filter((i) => i.found).length ?? 0;
@@ -190,14 +201,16 @@ export default function ReceiptNutrition({
             <ItemCard key={`${item.name}-${i}`} item={item} />
           ))}
           <div className="school-receipt-total">
-            합계 {fmt(result.total.kcal)}kcal · 탄 {fmt(result.total.carb)}g · 단 {fmt(result.total.protein)}g · 지{" "}
-            {fmt(result.total.fat)}g · 나트륨 {fmt(result.total.sodium)}mg
+            <div>합계</div>
+            <NutritionChart value={result.total} basis="meal" compact />
           </div>
-          <button className="btn" disabled={saving || saved || foundCount === 0} onClick={() => void eatAll()}>
+          <button className="btn" disabled={saving || saved || foundCount === 0} onClick={eatAll}>
             {saved ? "기록했어요" : saving ? "기록 중..." : `다 먹었어요 (${foundCount}개)`}
           </button>
         </>
       )}
+
+      <MealConfirmSheet request={sheet} onClose={() => setSheet(null)} />
     </div>
   );
 }

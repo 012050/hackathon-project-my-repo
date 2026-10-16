@@ -29,7 +29,14 @@ function MenuRow({
           </li>
         ))}
       </ul>
-      <button className="btn small" disabled={disabled} onClick={() => onEat(menu)}>
+      <button
+        className="btn small"
+        disabled={disabled}
+        onClick={(e) => {
+          e.stopPropagation(); // 카드 선택(지도 갱신)과 분리
+          onEat(menu);
+        }}
+      >
         {eating ? "기록 중..." : "먹었어요"}
       </button>
     </div>
