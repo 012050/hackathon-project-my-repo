@@ -22,8 +22,9 @@ services:
     build:
       context: ./frontend
       args:
-        # 다른 노트북에서 발표하면 백엔드 IP로
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+        # nginx가 /api/를 백엔드로 프록시 → 기본값은 빈 값(동일 오리진 상대 경로)
+        # 다른 호스트 IP로 직접 붙여야 할 때만: NEXT_PUBLIC_API_URL=http://IP:8000 docker compose build
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL-}
     container_name: hackathon-frontend
     ports:
       - "3000:3000"
