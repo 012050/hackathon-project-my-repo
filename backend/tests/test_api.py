@@ -1,74 +1,3 @@
-<<<<<<< HEAD
-"""FastAPI 서버 전체 점검 (팀원 노트북에서 실행).
-실행: backend 폴더에서  pip install httpx pytest  →  python -m pytest tests -q
-"""
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-import os  # noqa: E402
-
-os.environ["MOCK"] = "1"  # 테스트는 항상 예시 데이터로
-
-from fastapi.testclient import TestClient  # noqa: E402
-
-from app.main import MEALS_FILE, app  # noqa: E402
-
-c = TestClient(app)
-
-
-def test_health():
-    r = c.get("/api/health")
-    assert r.status_code == 200 and r.json() == {"status": "ok", "mock": True}
-
-
-def test_receipt_and_home_menus():
-    r = c.post("/api/receipt", files={"file": ("r.png", b"\x89PNG fake", "image/png")})
-    assert r.status_code == 200, r.text
-    ingredients = r.json()["ingredients"]
-    r = c.post("/api/menus/home", json={"ingredients": ingredients, "lacking": ["protein"]})
-    assert r.status_code == 200 and len(r.json()["menus"]) == 3
-
-
-def test_receipt_rejects_text_file():
-    r = c.post("/api/receipt", files={"file": ("a.txt", b"hi", "text/plain")})
-    assert r.status_code == 415 and r.json()["error"]["code"] == "unsupported_image"
-
-
-def test_school():
-    assert c.get("/api/campus").status_code == 200
-    assert c.get("/api/timetable").status_code == 200
-    r = c.get("/api/school/slots", params={"day": "화"})
-    assert r.status_code == 200 and r.json()["lunchWarning"]
-    r = c.post("/api/school/recommend", json={"day": "화", "now": "10:00"})
-    assert r.status_code == 200 and r.json()["recommendations"]
-
-
-def test_validation_error_shape():
-    r = c.post("/api/school/recommend", json={"day": "토", "now": "25:00"})
-    assert r.status_code == 422 and r.json()["error"]["code"] == "invalid_request"
-    r = c.get("/api/nope")
-    assert r.status_code == 404 and "error" in r.json()
-
-
-def test_meals_and_summary():
-    backup = MEALS_FILE.read_text(encoding="utf-8") if MEALS_FILE.exists() else None
-    try:
-        menu = c.post("/api/school/recommend", json={"day": "목", "now": "11:30"}).json()["recommendations"][0]["menus"][0]
-        r = c.post("/api/meals", json={"date": "2099-01-01", "time": "12:00", "menu": menu})
-        assert r.status_code == 201, r.text
-        meal_id = r.json()["id"]
-        assert len(c.get("/api/meals", params={"date": "2099-01-01"}).json()["meals"]) == 1
-        s = c.get("/api/summary", params={"date": "2099-01-01"}).json()
-        assert s["total"]["kcal"] == menu["kcal"]
-        assert c.delete(f"/api/meals/{meal_id}").status_code == 204
-        assert c.delete(f"/api/meals/{meal_id}").status_code == 404
-    finally:
-        if backup is None:
-            MEALS_FILE.unlink(missing_ok=True)
-        else:
-            MEALS_FILE.write_text(backup, encoding="utf-8")
-=======
 import io
 import os
 
@@ -262,4 +191,3 @@ def test_unknown_route():
     res = client.get("/api/nope")
     assert res.status_code == 404
     assert res.json()["error"]["code"] == "http_error"
->>>>>>> 84d553a (백엔드·프론트 초기 구현 + API 문서·협업 안내)
