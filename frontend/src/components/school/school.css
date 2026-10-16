@@ -1,0 +1,215 @@
+/* 학교 탭 전용 스타일 (클래스는 모두 school- 접두사) */
+
+.school-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.school-days {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.school-day {
+  position: relative;
+  padding: 10px 0;
+  font-size: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.school-day.active {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.school-today-dot {
+  position: absolute;
+  top: 5px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f97316;
+}
+
+.school-time {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.school-time input {
+  flex: 1;
+  padding: 8px 10px;
+  font-size: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.school-lunch-warn {
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  color: #c2410c;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 14px;
+  margin: 8px 0 12px;
+}
+
+.school-empty {
+  text-align: center;
+  color: #666;
+}
+
+.school-section {
+  font-size: 16px;
+  margin: 16px 0 8px;
+}
+
+.school-loading {
+  margin-bottom: 12px;
+}
+
+/* 타임라인 */
+.school-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.school-entry {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.school-entry-time {
+  width: 48px;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: #666;
+  line-height: 1.5;
+  text-align: right;
+}
+
+.school-entry-body {
+  flex: 1;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+}
+
+.school-entry-class .school-entry-body {
+  background: #f1f5f9;
+  border-left: 4px solid #64748b;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.school-entry-free .school-entry-body {
+  background: #fff;
+  border: 1px dashed #cbd5e1;
+  color: #475569;
+}
+
+.school-entry-free.now .school-entry-body {
+  background: #ecfdf5;
+  border: 2px solid #16a34a;
+  color: #14532d;
+}
+
+.school-now-tag {
+  background: #16a34a;
+  color: #fff;
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 12px;
+}
+
+/* 추천 카드 */
+.school-type {
+  font-size: 12px;
+  font-weight: normal;
+  background: #eef2ff;
+  border-radius: 999px;
+  padding: 2px 8px;
+  vertical-align: middle;
+}
+
+.school-reason {
+  font-size: 13px;
+  color: #166534;
+  margin-top: 4px;
+}
+
+.school-menu {
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+.school-menu-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.school-menu-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.school-nutrients {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  font-size: 12px;
+  color: #333;
+}
+
+.school-nutrients li {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.school-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-green { background: #16a34a; }
+.dot-yellow { background: #eab308; }
+.dot-red { background: #dc2626; }
+
+.school-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  background: #111;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  max-width: calc(100% - 32px);
+  z-index: 10;
+}
