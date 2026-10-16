@@ -20,3 +20,22 @@ cd backend && .venv/bin/python -m pytest tests -q
 # 전체 (docker compose)
 docker compose up --build    # 프론트 :3000, 백엔드 :8000
 MOCK=1 docker compose up --build   # 예시 데이터 모드
+```
+
+## AI 서버 설정
+
+영수증 인식·메뉴 추천·영양 추정은 OpenAI 호환 AI 서버를 씁니다. 주소·모델·키는 `backend/app/ai.py` 가
+환경변수 `AI_BASE_URL`, `AI_MODEL`, `AI_API_KEY` 로 읽고(코드 수정 불필요), 값은 `backend/.env.example` 에 정리돼 있습니다.
+개발용 서버는 `AI_BASE_URL=https://mcu.osxteams.net/v1`(끝에 `/v1` 필수, 모델 `qwen`, 키 불필요)이고,
+`.env` 파일은 자동으로 읽히지 않으니 실행하는 터미널에서 설정하세요.
+
+```bash
+# Git Bash / macOS
+cd backend && AI_BASE_URL=https://mcu.osxteams.net/v1 uvicorn app.main:app --reload --port 8000
+# PowerShell
+cd backend; $env:AI_BASE_URL="https://mcu.osxteams.net/v1"; uvicorn app.main:app --reload --port 8000
+# docker compose
+AI_BASE_URL=https://mcu.osxteams.net/v1 docker compose up --build
+```
+
+AI 서버가 안 될 때(발표장 네트워크 등)는 `MOCK=1` 로 실행하면 예시 데이터로 응답합니다.
