@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ApiError, addMeal, menuLights, today } from "@/lib/api";
 import type { Nutrition } from "@/lib/types";
 import { LIGHT_LABELS, NUTRIENTS } from "./labels";
@@ -90,6 +90,16 @@ export default function ReceiptNutrition({
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [elapsed, setElapsed] = useState(0);
+
+  // AI 인식은 7초 안팎 걸리므로 기다리는 동안 경과 시간을 보여줌
+  useEffect(() => {
+    if (!loading) return;
+    setElapsed(0);
+    const started = Date.now();
+    const id = setInterval(() => setElapsed(Math.floor((Date.now() - started) / 1000)), 500);
+    return () => clearInterval(id);
+  }, [loading]);
 
   const onFile = async (file: File) => {
     setLoading(true);
@@ -157,6 +167,13 @@ export default function ReceiptNutrition({
       <button className="btn" disabled={loading || saving} onClick={() => inputRef.current?.click()}>
         {loading ? "읽는 중..." : "편의점 영수증 찍기"}
       </button>
+
+      {loading && (
+        <div className="school-receipt-loading" role="status">
+          <span className="school-spinner" aria-hidden="true" />
+          영수증 읽는 중... {elapsed}초 <span className="muted">(보통 7초 정도 걸려요)</span>
+        </div>
+      )}
 
       {error && <div className="error">{error}</div>}
 

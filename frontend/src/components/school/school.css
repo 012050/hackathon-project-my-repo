@@ -372,3 +372,26 @@
   font-size: 14px;
   margin-top: 10px;
 }
+
+.school-receipt-loading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #3730a3;
+}
+
+.school-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #c7d2fe;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: school-spin 0.8s linear infinite;
+}
+
+@keyframes school-spin {
+  to { transform: rotate(360deg); }
+}
