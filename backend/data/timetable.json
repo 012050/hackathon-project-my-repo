@@ -1,0 +1,44 @@
+{
+<<<<<<< HEAD
+  "semester": "2026-2",
+  "classes": [
+    { "day": "월", "start": "11:00", "end": "12:00", "name": "운영체제", "room": "정보812", "building": 23 },
+    { "day": "월", "start": "12:00", "end": "14:00", "name": "웹프로그래밍", "room": "정보817", "building": 23 },
+
+    { "day": "화", "start": "11:00", "end": "12:00", "name": "웹프로그래밍", "room": "정보812", "building": 23 },
+    { "day": "화", "start": "12:00", "end": "13:00", "name": "디지털영상처리및실습", "room": "정보817", "building": 23 },
+    { "day": "화", "start": "13:00", "end": "15:00", "name": "운영체제", "room": "정보812", "building": 23 },
+    { "day": "화", "start": "15:00", "end": "16:00", "name": "데이터베이스프로그래밍", "room": "정보814", "building": 23 },
+    { "day": "화", "start": "17:00", "end": "18:00", "name": "지도교수멘토링VI", "room": "정보810", "building": 23 },
+
+    { "day": "수", "start": "09:00", "end": "10:00", "name": "데이터통신", "room": "정보810", "building": 23 },
+    { "day": "수", "start": "11:00", "end": "13:00", "name": "디지털영상처리및실습", "room": "정보811", "building": 23 },
+
+    { "day": "목", "start": "13:00", "end": "15:00", "name": "데이터베이스프로그래밍", "room": "정보814", "building": 23 },
+    { "day": "목", "start": "15:00", "end": "17:00", "name": "데이터통신", "room": "정보810", "building": 23 }
+=======
+  "classes": [
+    { "day": "월", "start": "09:00", "end": "10:00", "room": "10-301", "building": "10" },
+    { "day": "월", "start": "10:00", "end": "11:00", "room": "10-301", "building": "10" },
+    { "day": "월", "start": "13:00", "end": "14:00", "room": "23-201", "building": "23" },
+    { "day": "월", "start": "14:00", "end": "15:00", "room": "23-201", "building": "23" },
+    { "day": "화", "start": "11:00", "end": "12:00", "room": "23-201", "building": "23" },
+    { "day": "화", "start": "12:00", "end": "13:00", "room": "23-201", "building": "23" },
+    { "day": "화", "start": "13:00", "end": "14:00", "room": "23-201", "building": "23" },
+    { "day": "화", "start": "14:00", "end": "15:00", "room": "23-201", "building": "23" },
+    { "day": "화", "start": "15:00", "end": "16:00", "room": "23-201", "building": "23" },
+    { "day": "수", "start": "09:00", "end": "10:00", "room": "11-202", "building": "11" },
+    { "day": "수", "start": "10:00", "end": "11:00", "room": "11-202", "building": "11" },
+    { "day": "수", "start": "11:00", "end": "12:00", "room": "11-202", "building": "11" },
+    { "day": "수", "start": "14:00", "end": "15:00", "room": "23-201", "building": "23" },
+    { "day": "수", "start": "15:00", "end": "16:00", "room": "23-201", "building": "23" },
+    { "day": "목", "start": "10:00", "end": "11:00", "room": "23-201", "building": "23" },
+    { "day": "목", "start": "11:00", "end": "12:00", "room": "23-201", "building": "23" },
+    { "day": "목", "start": "13:00", "end": "14:00", "room": "10-301", "building": "10" },
+    { "day": "목", "start": "14:00", "end": "15:00", "room": "10-301", "building": "10" },
+    { "day": "금", "start": "09:00", "end": "10:00", "room": "23-201", "building": "23" },
+    { "day": "금", "start": "10:00", "end": "11:00", "room": "23-201", "building": "23" },
+    { "day": "금", "start": "11:00", "end": "12:00", "room": "23-201", "building": "23" }
+>>>>>>> 84d553a (백엔드·프론트 초기 구현 + API 문서·협업 안내)
+  ]
+}

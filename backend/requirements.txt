@@ -1,0 +1,13 @@
+<<<<<<< HEAD
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+python-multipart>=0.0.9
+anthropic>=0.40
+=======
+fastapi>=0.115
+uvicorn[standard]>=0.30
+openai>=1.40
+python-multipart>=0.0.9
+pydantic>=2.7
+>>>>>>> 84d553a (백엔드·프론트 초기 구현 + API 문서·협업 안내)

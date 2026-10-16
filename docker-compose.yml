@@ -1,0 +1,32 @@
+services:
+  backend:
+    build: ./backend
+    container_name: hackathon-backend
+    ports:
+      - "8000:8000"
+    environment:
+      # AI API는 docker host가 아니라 같은 LAN의 별도 서비스 → IP 그대로
+      AI_BASE_URL: ${AI_BASE_URL:-http://192.168.1.221:8000/v1}
+      AI_MODEL: ${AI_MODEL:-qwen}
+      # 발표 때 예시 데이터 모드로: MOCK=1
+      MOCK: ${MOCK:-}
+    volumes:
+      - ./backend/data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # 다른 노트북에서 발표하면 백엔드 IP로
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+    container_name: hackathon-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
