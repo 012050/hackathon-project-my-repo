@@ -25,7 +25,7 @@ import type {
   SlotsResponse,
 } from "@/lib/types";
 import SchoolTab from "@/components/school/SchoolTab";
-import DailySummaryCard from "@/components/nutrition/DailySummaryCard";
+import CoachSection from "@/components/coach/CoachSection";
 
 const NUTRIENT_LABELS: Record<string, string> = {
   kcal: "칼로리",
@@ -228,7 +228,7 @@ export default function Home() {
 
       {tab === "school" && <SchoolTab onMealAdded={refreshSummary} />}
 
-      <DailySummaryCard summary={summary} onChanged={refreshSummary} />
+      <CoachSection summary={summary} onChanged={refreshSummary} />
     </>
   );
 }

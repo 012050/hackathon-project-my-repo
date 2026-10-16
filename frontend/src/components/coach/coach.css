@@ -1,0 +1,309 @@
+/* 내 정보 · 코칭 · 식습관 (클래스는 모두 coach- 접두사) */
+
+.coach-banner,
+.coach-profile-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.coach-banner {
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  color: #3730a3;
+}
+
+.coach-banner .btn {
+  margin-top: 0;
+}
+
+.coach-profile-bar {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  color: #333;
+}
+
+.coach-link {
+  border: none;
+  background: none;
+  padding: 0;
+  color: #4f46e5;
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.coach-link:disabled {
+  opacity: 0.5;
+}
+
+/* 내 정보 시트 */
+.coach-choices {
+  flex: 1;
+  display: grid;
+  gap: 6px;
+}
+
+.coach-choices.two { grid-template-columns: repeat(2, 1fr); }
+.coach-choices.three { grid-template-columns: repeat(3, 1fr); }
+
+.coach-ref {
+  margin-top: 14px;
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.coach-note {
+  font-size: 11px;
+  color: #888;
+  margin-top: 4px;
+}
+
+/* 코칭 카드 */
+.coach-headline {
+  margin: 0 0 10px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.coach-over {
+  color: #dc2626;
+}
+
+.coach-remaining {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 4px 12px;
+  font-size: 13px;
+}
+
+.coach-remaining li {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 4px 0;
+  border-bottom: 1px dashed #eee;
+}
+
+.coach-remaining li.over strong {
+  color: #dc2626;
+}
+
+.coach-issues {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.coach-issues li {
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  color: #c2410c;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.coach-sub {
+  font-size: 15px;
+  margin: 16px 0 8px;
+}
+
+.coach-picks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.coach-pick {
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.coach-pick-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.coach-pick-name {
+  font-weight: 600;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.coach-tag {
+  flex-shrink: 0;
+  font-size: 11px;
+  background: #eef2ff;
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.coach-done,
+.coach-good {
+  margin-top: 12px;
+  background: #ecfdf5;
+  color: #166534;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.coach-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  background: #111;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  max-width: calc(100% - 32px);
+  z-index: 30;
+}
+
+/* 식습관 카드 */
+.coach-avg {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.coach-week {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.coach-week-row,
+.coach-week-plot {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.coach-week-plot {
+  position: relative;
+  height: 120px;
+  align-items: end;
+}
+
+.coach-week-val,
+.coach-week-day {
+  text-align: center;
+  font-size: 10px;
+  color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.coach-week-day {
+  font-size: 11px;
+  color: #666;
+}
+
+.coach-week-day.today {
+  font-weight: 700;
+  color: #111;
+}
+
+.coach-week-track {
+  height: 100%;
+  width: 100%;
+  max-width: 30px;
+  justify-self: center;
+  display: flex;
+  align-items: flex-end;
+  background: #f5f5f5;
+  border-radius: 6px 6px 0 0;
+}
+
+.coach-week-bar {
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+}
+
+.coach-week-bar.green { background: #16a34a; }
+.coach-week-bar.yellow { background: #eab308; }
+.coach-week-bar.red { background: #dc2626; }
+
+/* 권장량 기준선 (막대 영역 기준 위치) */
+.coach-week-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 2px dashed rgba(17, 17, 17, 0.55);
+  pointer-events: none;
+}
+
+.coach-week-line span {
+  position: absolute;
+  right: 0;
+  top: -16px;
+  font-size: 10px;
+  background: #fff;
+  padding: 0 2px;
+}
+
+.coach-patterns {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.coach-patterns li {
+  border-left: 4px solid #f97316;
+  background: #fffbeb;
+  border-radius: 0 10px 10px 0;
+  padding: 8px 10px;
+}
+
+.coach-problem {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.coach-fix {
+  font-size: 13px;
+  color: #166534;
+  margin-top: 2px;
+}
+
+.coach-demo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 8px;
+  border-top: 1px dashed #eee;
+  font-size: 11px;
+  color: #999;
+}
+
+.coach-demo .coach-link {
+  font-size: 11px;
+  color: #999;
+}
