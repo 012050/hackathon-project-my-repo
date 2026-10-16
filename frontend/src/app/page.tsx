@@ -24,6 +24,7 @@ import type {
   SchoolRecommendation,
   SlotsResponse,
 } from "@/lib/types";
+import SchoolTab from "@/components/school/SchoolTab";
 
 const NUTRIENT_LABELS: Record<string, string> = {
   kcal: "칼로리",
@@ -224,47 +225,7 @@ export default function Home() {
         </>
       )}
 
-      {tab === "school" && (
-        <>
-          {!day && <div className="warn">오늘은 수업이 없어요 (주말)</div>}
-          {day && slots?.lunchWarning && (
-            <div className="warn">오늘 점심(11~14시)에 20분 이상 빈 시간이 없어요. 미리 먹는 걸 추천해요.</div>
-          )}
-          {day && slots && (
-            <div className="card">
-              <h3>오늘 공강 ({day}요일)</h3>
-              <div className="chips">
-                {slots.slots.map((slot) => (
-                  <span key={slot.start} className="chip">
-                    {slot.start}~{slot.end} ({slot.minutes}분)
-                  </span>
-                ))}
-              </div>
-              <button className="btn" disabled={busy} onClick={() => void recommendSchool()}>
-                {busy ? "추천 중..." : "지금 먹을 곳 추천"}
-              </button>
-            </div>
-          )}
-          {recommendations.map((rec) => (
-            <div className="card" key={rec.placeId}>
-              <h3>
-                {rec.placeName} <span className="muted">({PLACE_LABELS[rec.type]})</span>
-              </h3>
-              <div className="muted">
-                도보 {rec.walkMinutes}분 · {rec.arriveBy} 도착 · {rec.reason}
-              </div>
-              {rec.menus.map((menu) => (
-                <MenuCard
-                  key={menu.id ?? menu.name}
-                  menu={menu}
-                  buttonLabel="먹어요"
-                  onEaten={(m) => void eat(m)}
-                />
-              ))}
-            </div>
-          ))}
-        </>
-      )}
+      {tab === "school" && <SchoolTab onMealAdded={refreshSummary} />}
 
       <div className="card">
         <h3>오늘 하루 합계 ({today()})</h3>
