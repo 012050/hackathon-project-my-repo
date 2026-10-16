@@ -38,16 +38,35 @@ function MenuRow({
 
 export default function PlaceCard({
   rec,
+  rank,
+  selected,
+  onSelect,
   eatingKey,
   onEat,
 }: {
   rec: SchoolRecommendation;
+  rank: number;
+  selected: boolean;
+  onSelect: () => void;
   eatingKey: string | null;
   onEat: (key: string, menu: Menu) => void;
 }) {
   return (
-    <div className="card">
+    <div
+      className={`card school-place${selected ? " selected" : ""}`}
+      role="button"
+      tabIndex={0}
+      aria-pressed={selected}
+      onClick={onSelect}
+      onKeyDown={(e) => {
+        if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {
+          e.preventDefault();
+          onSelect();
+        }
+      }}
+    >
       <h3>
+        <span className="school-rank">{rank}</span>
         {rec.placeName} <span className="school-type">{PLACE_TYPE_LABELS[rec.type] ?? rec.type}</span>
       </h3>
       <div className="muted">
