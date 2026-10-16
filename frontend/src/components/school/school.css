@@ -213,3 +213,185 @@
   max-width: calc(100% - 32px);
   z-index: 10;
 }
+
+/* 추천 카드 선택 */
+.school-place {
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.school-place.selected {
+  border: 2px solid #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+}
+
+.school-rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: #f97316;
+  color: #fff;
+  font-size: 12px;
+  vertical-align: 1px;
+}
+
+/* 캠퍼스맵 */
+.school-map-card {
+  padding: 8px;
+}
+
+.school-map {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1000 / 680;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #e5e7eb;
+}
+
+.school-map img,
+.school-map svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.school-map-route {
+  fill: none;
+  stroke: #f97316;
+  stroke-width: 7;
+  stroke-dasharray: 16 12;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.school-marker circle {
+  stroke: #fff;
+  stroke-width: 5;
+}
+
+.school-marker-from circle { fill: #2563eb; }
+.school-marker-to circle { fill: #6b7280; }
+.school-marker-place circle { fill: #f97316; opacity: 0.85; }
+.school-marker-place.selected circle { opacity: 1; stroke-width: 7; }
+
+.school-marker text {
+  text-anchor: middle;
+  dominant-baseline: central;
+  font-weight: 700;
+}
+
+.school-marker-num {
+  fill: #fff;
+  font-size: 30px;
+}
+
+.school-marker-place.selected .school-marker-num {
+  font-size: 38px;
+}
+
+.school-marker-label {
+  font-size: 36px;
+  fill: #111;
+  paint-order: stroke;
+  stroke: #fff;
+  stroke-width: 9px;
+}
+
+.school-map-legend {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: #555;
+  margin: 8px 4px 0;
+}
+
+.school-map-legend span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.school-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.school-legend-dot.from { background: #2563eb; }
+.school-legend-dot.to { background: #6b7280; }
+.school-legend-dot.place { background: #f97316; }
+
+.school-map-route-text {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 6px 4px 2px;
+}
+
+/* 편의점 영수증 */
+.school-receipt {
+  margin-top: 16px;
+}
+
+.school-badge {
+  margin-left: 6px;
+  font-size: 11px;
+  font-weight: normal;
+  color: #92400e;
+  background: #fef3c7;
+  border-radius: 999px;
+  padding: 1px 6px;
+  vertical-align: 1px;
+}
+
+.school-receipt-missing .school-menu-name {
+  color: #888;
+}
+
+.school-receipt-total {
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+  padding-top: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.school-receipt-notice {
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  color: #3730a3;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.school-receipt-loading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #3730a3;
+}
+
+.school-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #c7d2fe;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: school-spin 0.8s linear infinite;
+}
+
+@keyframes school-spin {
+  to { transform: rotate(360deg); }
+}

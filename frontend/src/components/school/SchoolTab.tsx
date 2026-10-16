@@ -16,12 +16,15 @@ import type {
   Building,
   ClassItem,
   DayOfWeek,
+  FoodPlace,
   Menu,
   SchoolRecommendResponse,
   SlotsResponse,
 } from "@/lib/types";
+import CampusMap from "./CampusMap";
 import DayTimePicker from "./DayTimePicker";
 import PlaceCard from "./PlaceCard";
+import ReceiptNutrition from "./ReceiptNutrition";
 import Timeline from "./Timeline";
 import "./school.css";
 
@@ -34,6 +37,8 @@ export default function SchoolTab({ onMealAdded }: { onMealAdded?: () => void })
 
   const [classes, setClasses] = useState<ClassItem[]>([]);
   const [buildings, setBuildings] = useState<Building[]>([]);
+  const [foodPlaces, setFoodPlaces] = useState<FoodPlace[]>([]);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [slots, setSlots] = useState<SlotsResponse | null>(null);
   const [result, setResult] = useState<SchoolRecommendResponse | null>(null);
   const [loadingSlots, setLoadingSlots] = useState(false);
@@ -49,7 +54,10 @@ export default function SchoolTab({ onMealAdded }: { onMealAdded?: () => void })
       .then((r) => setClasses(r.classes))
       .catch((e) => setError(errorText(e)));
     getCampus()
-      .then((r) => setBuildings(r.buildings))
+      .then((r) => {
+        setBuildings(r.buildings);
+        setFoodPlaces(r.foodPlaces);
+      })
       .catch((e) => setError(errorText(e)));
   }, []);
 
@@ -70,6 +78,7 @@ export default function SchoolTab({ onMealAdded }: { onMealAdded?: () => void })
     if (!day || !/^\d{2}:\d{2}$/.test(time)) return;
     let alive = true;
     setLoadingRec(true);
+    setSelectedId(null); // 새 추천이면 1번부터
     getSchoolRecommend({ day, now: time })
       .then((r) => alive && setResult(r))
       .catch((e) => alive && setError(errorText(e)))
@@ -90,6 +99,10 @@ export default function SchoolTab({ onMealAdded }: { onMealAdded?: () => void })
     () => Object.fromEntries(buildings.map((b) => [b.id, b.name])),
     [buildings],
   );
+  const placeBuildings = useMemo(
+    () => Object.fromEntries(foodPlaces.map((p) => [p.id, p.building])),
+    [foodPlaces],
+  );
 
   const eat = async (key: string, menu: Menu) => {
     setEatingKey(key);
@@ -109,6 +122,9 @@ export default function SchoolTab({ onMealAdded }: { onMealAdded?: () => void })
   const dayResult = result?.day === day && result.now === time ? result : null;
   const noClass = day !== null && classes.length > 0 && dayClasses.length === 0;
   const dayLabel = day === realToday ? "오늘은" : `${day}요일은`;
+  const recs = dayResult?.slot ? dayResult.recommendations : [];
+  // 선택이 없거나 목록에서 사라졌으면 1번이 선택된 상태
+  const activeId = recs.some((r) => r.placeId === selectedId) ? selectedId : recs[0]?.placeId ?? null;
 
   return (
     <div className="school-tab">
@@ -162,13 +178,38 @@ export default function SchoolTab({ onMealAdded }: { onMealAdded?: () => void })
           {!loadingRec && dayResult && (dayResult.slot === null || dayResult.recommendations.length === 0) && (
             <div className="card school-empty">지금은 갈 수 있는 곳이 없어요</div>
           )}
+          {!loadingRec && recs.length > 0 && (
+            <CampusMap
+              recommendations={recs}
+              selectedId={activeId}
+              fromBuilding={dayResult?.slot?.fromBuilding}
+              toBuilding={dayResult?.slot?.toBuilding}
+              placeBuildings={placeBuildings}
+              buildingNames={buildingNames}
+            />
+          )}
           {!loadingRec &&
-            dayResult?.slot &&
-            dayResult.recommendations.map((rec) => (
-              <PlaceCard key={rec.placeId} rec={rec} eatingKey={eatingKey} onEat={(k, m) => void eat(k, m)} />
+            recs.map((rec, i) => (
+              <PlaceCard
+                key={rec.placeId}
+                rec={rec}
+                rank={i + 1}
+                selected={rec.placeId === activeId}
+                onSelect={() => setSelectedId(rec.placeId)}
+                eatingKey={eatingKey}
+                onEat={(k, m) => void eat(k, m)}
+              />
             ))}
         </>
       )}
+
+      <ReceiptNutrition
+        time={time}
+        onRecorded={(message) => {
+          setToast(message);
+          onMealAdded?.();
+        }}
+      />
 
       {toast && (
         <div className="school-toast" role="status">
