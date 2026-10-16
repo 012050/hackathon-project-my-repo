@@ -1,5 +1,5 @@
 import type { SchoolRecommendation } from "@/lib/types";
-import { MAP_COORDS, MAP_HEIGHT, MAP_WIDTH } from "./mapCoords";
+import { GATE, MAP_HEIGHT, MAP_WIDTH, coordsForName, type Point } from "./mapCoords";
 
 type Kind = "from" | "to" | "place";
 
@@ -23,14 +23,17 @@ const OFFSETS = [
   [0, -56],
 ];
 
-function placeMarkers(items: Omit<Marker, "x" | "y">[]): Marker[] {
+const GATE_ID = "__gate";
+
+function placeMarkers(items: Omit<Marker, "x" | "y">[], resolve: (building: string) => Point | null): Marker[] {
   const used: Record<string, number> = {};
   const out: Marker[] = [];
   for (const item of items) {
-    const base = MAP_COORDS[item.building];
+    const base = resolve(item.building);
     if (!base) continue; // 지도 좌표가 없는 건물은 점을 찍지 않음
-    const n = used[item.building] ?? 0;
-    used[item.building] = n + 1;
+    const spot = `${base.x},${base.y}`;
+    const n = used[spot] ?? 0;
+    used[spot] = n + 1;
     const [dx, dy] = OFFSETS[n % OFFSETS.length];
     out.push({ ...item, x: base.x + dx, y: base.y + dy });
   }
@@ -52,12 +55,14 @@ export default function CampusMap({
   placeBuildings: Record<string, string>;
   buildingNames: Record<string, string>;
 }) {
-  const from = fromBuilding ?? null;
+  // 그날 첫 공강이면 출발 건물이 없으므로 정문에서 등교하는 것으로 봄
+  const from = fromBuilding ?? GATE_ID;
   const to = toBuilding ?? null;
-  const sameBuilding = from !== null && from === to;
+  const sameBuilding = from === to;
+  const fromLabel = from === GATE_ID ? "정문(등교)" : "지금";
 
   const items: Omit<Marker, "x" | "y">[] = [];
-  if (from) items.push({ key: "from", kind: "from", building: from, label: sameBuilding ? "지금·다음 수업" : "지금" });
+  items.push({ key: "from", kind: "from", building: from, label: sameBuilding ? "지금·다음 수업" : fromLabel });
   if (to && !sameBuilding) items.push({ key: "to", kind: "to", building: to, label: "다음 수업" });
   recommendations.slice(0, 3).forEach((rec, i) => {
     const building = placeBuildings[rec.placeId];
@@ -72,7 +77,7 @@ export default function CampusMap({
     }
   });
 
-  const markers = placeMarkers(items);
+  const markers = placeMarkers(items, (b) => (b === GATE_ID ? GATE : coordsForName(buildingNames[b])));
   const fromM = markers.find((m) => m.kind === "from") ?? null;
   const toM = sameBuilding ? fromM : markers.find((m) => m.kind === "to") ?? null;
   const selM = markers.find((m) => m.kind === "place" && m.selected) ?? null;
@@ -82,7 +87,7 @@ export default function CampusMap({
   const selRec = recommendations.find((r) => r.placeId === selectedId);
   const routeText = selRec
     ? [
-        from ? buildingNames[from] ?? `${from}번 건물` : null,
+        from === GATE_ID ? "정문" : buildingNames[from] ?? `${from}번 건물`,
         `${selRec.placeName} (도보 ${selRec.walkMinutes}분)`,
         to ? buildingNames[to] ?? `${to}번 건물` : null,
       ]
